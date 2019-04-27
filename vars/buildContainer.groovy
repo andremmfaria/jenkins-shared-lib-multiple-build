@@ -6,6 +6,6 @@ def call(def details) {
   else { details.'folder' = ".infra" }
 
   sh """
-      docker build -t ${details.nexus_address}:${details.registry_port}/${details.img_name}:${details.branch} ${details.folder}
+      docker build -t ${details.nexus_address}:${details.registry_port}/${details.img_name}:${details.branch} -f ${details.folder}/Dockerfile .
   """
 }
