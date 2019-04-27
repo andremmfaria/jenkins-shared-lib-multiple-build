@@ -2,13 +2,12 @@ def call(Map config) {
 
 	def details = [:]
 
-	details.'engine'		= "${config.engine}"
+	details.'engine'		    = "${config.engine}"
 	details.'nexus_address' = "${env.NEXUS_ADDRESS.split('/')[-1]}"
-	details.'branch'		= "${env.JOB_BASE_NAME.toLowerCase()}".replace("%2f","-")
-	details.'application'	= "${env.JOB_NAME.toLowerCase().split('/')[-2]}"
-	details.'img_name'		= "${details.application.split('--')[1]}"
-	details.'git_repo'		= "${details.application}"
-	details.'sonarServer'	= 'sonarqube'
+	details.'branch'		    = "${env.JOB_BASE_NAME.toLowerCase()}".replace("%2f","-")
+	details.'application'	  = "${env.JOB_NAME.toLowerCase().split('/')[-2]}"
+	details.'img_name'		  = "${details.application}"
+	details.'git_repo'		  = "${details.application}"
 
 	if ("${config.type}" == 'app') {
 		switch("${details.branch}") {
@@ -46,18 +45,18 @@ def call(Map config) {
 		}
 	}
 	else if ( "${details.environment}" == 'dev' ) {
-		if ( "${details.engine}" == 'java' ) {
-			javaPipelineDefinition(details)
+		if ( "${details.engine}" == 'php' ) {
+			phpPipelineDefinition(details)
 		}
 	} 
 	else if ( "${details.environment}" == 'hml' ) {
-		if ( "${details.engine}" == 'java' ) {
-			javaPipelineDefinition(details)
+		if ( "${details.engine}" == 'php' ) {
+			phpPipelineDefinition(details)
 		}
 	} 
 	else if ( "${details.environment}" == 'prd' ) {
-		if ( "${details.engine}" == 'java' ) {
-			javaPipelineDefinition(details)
+		if ( "${details.engine}" == 'php' ) {
+			phpPipelineDefinition(details)
 		}
 	} 
 	else {

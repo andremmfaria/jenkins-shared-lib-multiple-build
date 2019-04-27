@@ -21,13 +21,20 @@ def call(Map details) {
 				}
 			}
 
-			stage('Build') {
+			stage('Container build') {
+				when {
+					expression {
+						currentBuild.result == null ||
+						currentBuild.result == 'SUCCESS' ||
+						currentBuild.result == 'UNSTABLE'
+					}
+				}
 				steps {
 					buildContainer(details)
 				}
 			}
 
-			stage('Push') {
+			stage('Container push to registry') {
 				when {
 					expression {
 						currentBuild.result == null ||

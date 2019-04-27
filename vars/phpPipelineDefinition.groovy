@@ -6,8 +6,6 @@ def call(Map details) {
 
 		environment {
 			environment = "${details.environment}"
-			SONAR_URL = "${details.sonarqube_url}"
-			SONAR_LOGIN = "${details.sonarqube_login}"
 		}
 
 		options {
@@ -17,24 +15,6 @@ def call(Map details) {
 		}
 
 		stages {
-			stage('Application Build') {
-				steps {
-					build(details)
-				}
-			}
-/*
-			stage('Test') {
-				steps {
-					test(details)
-				}
-			}
-
-			stage('Analysis') {
-				steps {
-					sonar(details)
-				}
-			}
-*/
 			stage('Login on registry') {
 				steps {
 					loginOnRegistry(details)
@@ -54,7 +34,7 @@ def call(Map details) {
 				}
 			}
 
-			stage('Deploy') {
+			stage('Container push to registry') {
 				when {
 					expression {
 						currentBuild.result == null ||
