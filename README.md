@@ -3,7 +3,7 @@
 This is a Jenkins shared library definition to implement automated pipeline definitions to projects without explicitly defining the pipelines on the project's Jenkinsfile.
 This uses the multibranch pipeline definitions by default.
 
-* Docker
+* Docker (windows & linux)
 * Angular (npm)
 * Java (gradle)
 * Nodejs (npm)
