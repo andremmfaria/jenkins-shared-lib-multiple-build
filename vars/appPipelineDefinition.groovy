@@ -5,13 +5,12 @@ def call(Map details) {
 		}
 
 		environment {
+      BASH_ENV = "${details.bashEnv}"
 			environment = "${details.environment}"
-      CONTAINER_REG = credentials('CONTAINER_REG_CREDENTIALS')  
+     	CONTAINER_REG = credentials('CONTAINER_REG_CREDENTIALS')  
+     	BINARY_REPO = credentials('BINARY_REPO_CREDENTIALS')  
+     	SONAR_CRED = credentials('SONAR_CREDENTIALS')  
 		}
-
-    triggers{
-      cron('H 2 * * *')
-    }
 
 		options {
 			buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -36,13 +35,25 @@ def call(Map details) {
 		}
 
 		stages {
-      stage('Login on registry') {
+			stage('Login on registry') {
 				steps {
 					logOnRegistry(details)
 				}
 			}
+			
+			stage('Build application') {
+				steps {
+					buildApplication(details)
+				}
+			}
 
-			stage('Build container') {
+			stage('Static analysis') {
+				steps {
+					staticScan(details)
+				}
+			}
+			
+     	stage('Build container') {
 				steps {
 					buildContainer(details)
 				}
